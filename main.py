@@ -1,4 +1,5 @@
 from app import JoeKuruta
+import curses
 
 def main():
 	app = JoeKuruta()

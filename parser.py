@@ -8,17 +8,19 @@ import yaml
 
 from functools import wraps
 
+import logging
+
 def print_function_name(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
-        # print(f"Calling function: {func.__name__}")
+        # logging.info(f"Calling function: {func.__name__}")
         return func(*args, **kwargs)
     return wrapper
 
 class KurutaParser():
     def __init__(self,
                  spreadsheet=KURUTA_SPREADSHEET,
-                 loglevel=logging.INFO):
+                 loglevel=logging.DEBUG):
         self.cards = {}
         self.spreadsheet = spreadsheet
         self.loglevel = loglevel
@@ -29,19 +31,28 @@ class KurutaParser():
     def init(self):
         logging.basicConfig(format="%(message)s",
                             level=self.loglevel)
+
+        logging.debug("Initializing Parser...")
         self.cards = self.parse_spreadsheet(self.spreadsheet)
+        logging.debug("Sorting Cards...")
+        self.sort_cards(key="code")
+
+    def sort_cards(self, key="code"):
+        self.cards = sorted(self.cards, key=lambda d: d[key])
 
     @print_function_name
     def display_cards(self):
+        # Header
         title = "Displaying Cards"
-        print(title)
-        print("=" * len(title))
+        logging.info(title)
+        logging.info("=" * len(title))
+
+        # Display Cards
         for card in self.cards:
             card_content = {
-                self.cards[card]["code"]: {
-                    "character": self.cards[card]["character"],
-                    "series": self.cards[card]["series"]
-                }
+                "code": card["code"],
+                "character": card["character"],
+                "series": card["series"]
             }
             logging.info(yaml.dump(card_content,
                                    indent=4,
@@ -52,7 +63,7 @@ class KurutaParser():
         with open(KURUTA_SPREADSHEET, "r") as f:
             rows = csv.DictReader(f)
 
-            contents = {}
+            contents = []
             for row in rows:
-                contents[row["code"]] = row
+                contents.append(row)
         return contents

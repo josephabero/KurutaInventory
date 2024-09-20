@@ -40,8 +40,8 @@ class Menu:
                 break
             elif choice == "q":
                 self.clear_screen()
-                print("Exiting the menu.")
-                break
+                print("Quitting the application.")
+                exit(1)
             else:
                 self.clear_screen()
                 print("Invalid choice. Please try again.")

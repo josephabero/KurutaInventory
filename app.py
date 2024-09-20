@@ -14,10 +14,21 @@ class JoeKuruta():
 
         # Display Cards Sub-Menu
         display_menu = Menu("Display Cards")
-        display_menu.add_option("1", "By Code", self.parser.display_cards)
+
+        def sort_and_display_by_key(key):
+            self.parser.sort_cards(key=key)
+            self.parser.display_cards()
+
+        def sort_and_display_by_code():
+            sort_and_display_by_key("code")
+
+        def sort_and_display_by_character():
+            sort_and_display_by_key("character")
+
+        display_menu.add_option("1", "By Code", sort_and_display_by_code)
+        display_menu.add_option("2", "By Character", sort_and_display_by_character)
 
         # Main Menu
         menu.add_option("1", "Display Cards", display_menu)
 
         return menu
-
