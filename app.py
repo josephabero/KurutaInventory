@@ -25,8 +25,12 @@ class JoeKuruta():
         def sort_and_display_by_character():
             sort_and_display_by_key("character")
 
+        def sort_and_display_by_series():
+            sort_and_display_by_key("series")
+
         display_menu.add_option("1", "By Code", sort_and_display_by_code)
         display_menu.add_option("2", "By Character", sort_and_display_by_character)
+        display_menu.add_option("3", "By Series", sort_and_display_by_series)
 
         # Main Menu
         menu.add_option("1", "Display Cards", display_menu)
